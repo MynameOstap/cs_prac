@@ -1,105 +1,63 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace MyNamespace
 {
-    public class Item
-    {
-        public string Name { get; set; }
-        public int Quality { get; set; }
-        public decimal Price { get; set; }
-
-        public Item(string name,int quality,decimal price)
-        {
-            Name = name;
-            Quality = quality;
-            Price = price;
-        }
-
-        public override string ToString()
-        {
-            return $"{Name}: {Quality} шт  {Price} грн.";
-        }
+  
         
-    }
-
-    public class ShoppingList
-    {
-        private List<Item> items;
-
-        public ShoppingList()
-        {
-            items = new List<Item>();
-        }
-
-        public void AddItem(string name, int quality, decimal price)
-        {
-            items.Add(new Item(name,quality,price));
-            Console.WriteLine($"Ви додали ноаий елемент: {name}: {quality} шт  {price} грн. ");
-        }
-
-        public void RemoveItem(string name)
-        {
-            var item = items.Find(i => i.Name == name);
-
-            if (item == null)
-            {
-                Console.WriteLine("Обєкт не знайдено");
-            }
-
-            items.Remove(item);
-            Console.WriteLine($"товер {name} видалено зі списку");
-
-            
-        }
-
-        public void ShowItems()
-        {
-            foreach (var item in items)
-            {
-                Console.WriteLine(item.ToString());
-                
-            }
-        }
-
-        public int  GetTotalQuantity()
-        {
-            int total = 0;
-            foreach (var item in items)
-            {
-                total += item.Quality;
-            }
-
-            return total;
-        }
-        
-    }
-   
+  
+    
 
     class Program
     {
-        static void Main(string[] args)
+
+        
+        static public async Task Get()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    string url = "http://localhost:3000/shop";
+                    HttpResponseMessage response = await client.GetAsync(url);
+                    response.EnsureSuccessStatusCode(); 
+                    string responseBody = await response.Content.ReadAsStringAsync();
+
+                    Console.WriteLine(responseBody);
+                
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            
+            }
+     
+        }
+        static public async Task Main(string[] args)
+        {
+            await Get();
+        }
+
+        
+        static void Main_(string[] args)
+
         {
             ShoppingList shoppingList = new ShoppingList();
+            List<IInterface> command = new List<IInterface>
+            {
+                new AddItemCommand(shoppingList),
+                new DeleteItemCommand(shoppingList),
+                new ShowItemsCommand(shoppingList),
+                new ShowTotalQuantityCommand(shoppingList)
 
-            // Додавання товарів
-            shoppingList.AddItem("Яблука", 5, 12.5m);
-            shoppingList.AddItem("Хліб", 2, 20m);
-            shoppingList.AddItem("Молоко", 1, 30m);
+            };
+            new Menu(command).Execute();
 
-            // Показ списку
-            shoppingList.ShowItems();
-
-            // Видалення товару
-            shoppingList.RemoveItem("Хліб");
-
-            // Показ списку після видалення
-            shoppingList.ShowItems();
-
-            // Загальна кількість товарів
-            Console.WriteLine($"Загальна кількість товарів: {shoppingList.GetTotalQuantity()}");
-
-            // Спроба видалити товар, якого немає
-            shoppingList.RemoveItem("Шоколад");
+            
         }
     }
 
