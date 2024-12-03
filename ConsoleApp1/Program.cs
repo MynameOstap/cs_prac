@@ -2,7 +2,9 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 namespace MyNamespace
 {
   
@@ -37,12 +39,45 @@ namespace MyNamespace
             }
      
         }
+
+        static public async Task Post()
+        {
+            string url = "http://localhost:3000/shop";
+
+            var data = new
+            {
+                Name = "John Doe",
+                Age = 30,
+                Email = "john.doe@example.com"
+            };
+            string json = JsonSerializer.Serialize(data);
+            using (HttpClient client = new HttpClient())
+            {
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                client.Timeout = TimeSpan.FromSeconds(5);
+                try
+                {
+                    var response = await client.PostAsync(url, content);
+                    Console.WriteLine(response.StatusCode);
+                }
+                catch (TaskCanceledException e)
+                {
+                    Console.WriteLine("Timeout");
+                    
+                }
+                
+
+            
+            }
+            
+        }
         static public async Task Main(string[] args)
         {
-            await Get();
+            await Post();
         }
-
         
+        
+       
         static void Main_(string[] args)
 
         {
