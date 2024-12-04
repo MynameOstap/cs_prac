@@ -13,6 +13,11 @@ public class Item
         Price = price;
     }
 
+    public Item()
+    {
+        Name = "";
+    }
+
     public override string ToString()
     {
         return $"{Name}: {Quality} шт  {Price} грн.";

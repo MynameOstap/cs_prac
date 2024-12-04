@@ -1,53 +1,65 @@
 ﻿namespace MyNamespace;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Text;
+using System.Text.Json;
+
 
 public class ShoppingList
 {
-    private List<Item> items;
+    // private List<Item> items;
+    //
+    // public ShoppingList()
+    // {
+    //     items = new List<Item>();
+    // }
 
-    public ShoppingList()
+    public static async void AddItem(string name, int quality, decimal price)
     {
-        items = new List<Item>();
-    }
-
-    public void AddItem(string name, int quality, decimal price)
-    {
-        items.Add(new Item(name,quality,price));
+        // items.Add(new Item(name,quality,price));
+        var data = new Item
+        {
+            Name = name,
+            Quality = quality,
+            Price = price
+        };
+        string json = JsonSerializer.Serialize(data);
+        await Program.Post(json);
         Console.WriteLine($"Ви додали ноаий елемент: {name}: {quality} шт  {price} грн. ");
     }
 
-    public void RemoveItem(string name)
+
+//     public void RemoveItem(string name)
+//     {
+//         var item = items.Find(i => i.Name == name);
+//
+//         if (item == null)
+//         {
+//             Console.WriteLine("Обєкт не знайдено");
+//         }
+//
+//         items.Remove(item);
+//         Console.WriteLine($"товер {name} видалено зі списку");
+//
+//             
+//     }
+//
+    public static async void ShowItems()
     {
-        var item = items.Find(i => i.Name == name);
-
-        if (item == null)
-        {
-            Console.WriteLine("Обєкт не знайдено");
-        }
-
-        items.Remove(item);
-        Console.WriteLine($"товер {name} видалено зі списку");
-
-            
+        await Program.Get();
     }
-
-    public void ShowItems()
-    {
-        foreach (var item in items)
-        {
-            Console.WriteLine(item.ToString());
-                
-        }
-    }
-
-    public int  GetTotalQuantity()
-    {
-        int total = 0;
-        foreach (var item in items)
-        {
-            total += item.Quality;
-        }
-
-        return total;
-    }
-        
 }
+//
+//     public int  GetTotalQuantity()
+//     {
+//         int total = 0;
+//         foreach (var item in items)
+//         {
+//             total += item.Quality;
+//         }
+//
+//         return total;
+//     }
+//         
+// }

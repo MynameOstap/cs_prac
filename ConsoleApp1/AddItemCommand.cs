@@ -2,14 +2,14 @@
 
 class AddItemCommand : IInterface
 {
-    private ShoppingList ShoppingList;
+    // private ShoppingList ShoppingList;
+    //
+    // public  AddItemCommand(ShoppingList shoppingList)
+    // {
+    //     this.ShoppingList = shoppingList;
+    // }
 
-    public  AddItemCommand(ShoppingList shoppingList)
-    {
-        this.ShoppingList = shoppingList;
-    }
-
-    public void Execute()
+    public async void Execute()
     {
         Console.WriteLine("Введіть назву продукту:");
         string name = Console.ReadLine();
@@ -53,8 +53,7 @@ class AddItemCommand : IInterface
             }
                 
         }
-           
-        ShoppingList.AddItem(name, quality,price);
+        ShoppingList.AddItem(name,quality,price);
         Console.WriteLine("Продукт успішно додано до списку!");
     }
 

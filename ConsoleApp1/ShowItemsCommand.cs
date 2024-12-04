@@ -2,16 +2,16 @@
 
 public class ShowItemsCommand : IInterface
 {
-    private ShoppingList shoppingList;
+    // private ShoppingList shoppingList;
+    //
+    // public ShowItemsCommand(ShoppingList shoppingList)
+    // {
+    //     this.shoppingList = shoppingList;
+    // }
 
-    public ShowItemsCommand(ShoppingList shoppingList)
+    public  void Execute()
     {
-        this.shoppingList = shoppingList;
-    }
-
-    public void Execute()
-    {
-        shoppingList.ShowItems();
+         ShoppingList.ShowItems();
     }
     public  string GetInfo()
     {
