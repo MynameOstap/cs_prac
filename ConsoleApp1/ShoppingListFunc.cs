@@ -25,8 +25,16 @@ public class ShoppingList
             Price = price
         };
         string json = JsonSerializer.Serialize(data);
-        await Program.Post(json);
+        await DataRecive.Post(json);
         Console.WriteLine($"Ви додали ноаий елемент: {name}: {quality} шт  {price} грн. ");
+    }
+
+    public static async void DeleteItem(int id)
+    {
+        var data = id;
+        string json = JsonSerializer.Serialize(data);
+        await DataRecive.Delete(json,id);
+        
     }
 
 
@@ -47,7 +55,7 @@ public class ShoppingList
 //
     public static async void ShowItems()
     {
-        await Program.Get();
+        await DataRecive.Get();
     }
 }
 //

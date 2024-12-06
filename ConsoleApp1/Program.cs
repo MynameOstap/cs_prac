@@ -20,61 +20,8 @@ namespace MyNamespace
     {
 
         
-        static public async Task Get()
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                try
-                {
-                    string url = "http://localhost:3000/shop";
-                    HttpResponseMessage response = await client.GetAsync(url);
-                    response.EnsureSuccessStatusCode(); 
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    
-                    JArray data = JArray.Parse(responseBody);
-
-                    foreach (var item in data)
-                    {
-                        Console.WriteLine(item);
-                    }
-
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
-            
-            }
-     
-        }
-
-        static public async Task Post(string json)
-        {
-            string url = "http://localhost:3000/shop";
-
-            
-            
-            using (HttpClient client = new HttpClient())
-            {
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-                client.Timeout = TimeSpan.FromSeconds(5);
-                try
-                {
-                    var response = await client.PostAsync(url, content);
-                     Console.WriteLine(response.StatusCode);
-                }
-                catch (TaskCanceledException e)
-                {
-                    Console.WriteLine("Timeout");
-                    
-                }
-                
-
-            
-            }
-            
-        }
+        
+        
       
         
         
@@ -104,7 +51,7 @@ namespace MyNamespace
             List<IInterface> command = new List<IInterface>
             {
                 new AddItemCommand(),
-                // new DeleteItemCommand(shoppingList),
+                new DeleteItemCommand(),
                 new ShowItemsCommand()
                 // new ShowTotalQuantityCommand(shoppingList)
 
